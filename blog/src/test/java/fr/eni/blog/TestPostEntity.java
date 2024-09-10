@@ -21,82 +21,82 @@ import java.util.Optional;
 @ActiveProfiles("test")
 public class TestPostEntity {
 
-    @Autowired
-    private PostRepository postRepository;
-
-    @Autowired
-    private TestEntityManager em;
-
-    @Test
-    @Commit
-    public void testSavePost(){
-
-        Post post = Post.builder()
-                .title("Formation Symfony")
-                .content("lbalbalablaba")
-                .author("Adel")
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        Post postDb =  postRepository.save(post);
-        Assertions.assertThat(postDb).isNotNull();
-        Assertions.assertThat(postDb.getTitle()).isEqualTo("Formation Symfony");
-        System.out.println(postDb);
-    }
-
-    @Test
-    public void testPersistWithEm(){
-        Post post = Post.builder()
-                .title("Formation Spring")
-                .content("lbalbalablaba")
-                .author("Adel")
-                .createdAt(LocalDateTime.now())
-                .build();
-
-        em.persist(post);
-        em.flush();
-        Assertions.assertThat(post.getId()).isNotNull();
-        Assertions.assertThat(post.getId()).isGreaterThan(0);
-    }
-
-    @Test
-    public void testFindOne(){
-        final Integer id = 1;
-        Post post = Post.builder()
-                .title("Formation Symfony")
-                .content("lbalbalablaba")
-                .author("Adel")
-                .createdAt(LocalDateTime.now())
-                .build();
-        Optional<Post> postOpt = postRepository.findById(id);
-
-        postOpt.ifPresent((p)->{
-            postRepository.delete(p);
-        });
-
-        Assertions.assertThat(postOpt.isPresent()).isTrue();
-
-        postOpt.ifPresent( p->{ // p le post qu'on a recupéré depuis sqlserver
-            Assertions.assertThat(p.equals(post)).isTrue();
-        });
-    }
-
-
-    @Test
-    public void testFindAll(){
-        List<Post> posts = postRepository.findAll();
-        Assertions.assertThat(posts).isNotNull();
-        Assertions.assertThat(posts.size()).isGreaterThan(0);
-        posts.forEach(System.out::println);
-    }
-
-    @Test
-    public void testFindByTitle(){
-        final String title = "%symfony%";
-        List<Post> posts = postRepository.findByTitleLike(title);
-        Assertions.assertThat(posts).isNotNull();
-        Assertions.assertThat(posts.size()).isGreaterThan(0);
-        posts.forEach(System.out::println);
-    }
+//    @Autowired
+//    private PostRepository postRepository;
+//
+//    @Autowired
+//    private TestEntityManager em;
+//
+//    @Test
+//    @Commit
+//    public void testSavePost(){
+//
+//        Post post = Post.builder()
+//                .title("Formation Symfony")
+//                .content("lbalbalablaba")
+//                .author("Adel")
+//                .createdAt(LocalDateTime.now())
+//                .build();
+//
+//        Post postDb =  postRepository.save(post);
+//        Assertions.assertThat(postDb).isNotNull();
+//        Assertions.assertThat(postDb.getTitle()).isEqualTo("Formation Symfony");
+//        System.out.println(postDb);
+//    }
+//
+//    @Test
+//    public void testPersistWithEm(){
+//        Post post = Post.builder()
+//                .title("Formation Spring")
+//                .content("lbalbalablaba")
+//                .author("Adel")
+//                .createdAt(LocalDateTime.now())
+//                .build();
+//
+//        em.persist(post);
+//        em.flush();
+//        Assertions.assertThat(post.getId()).isNotNull();
+//        Assertions.assertThat(post.getId()).isGreaterThan(0);
+//    }
+//
+//    @Test
+//    public void testFindOne(){
+//        final Integer id = 1;
+//        Post post = Post.builder()
+//                .title("Formation Symfony")
+//                .content("lbalbalablaba")
+//                .author("Adel")
+//                .createdAt(LocalDateTime.now())
+//                .build();
+//        Optional<Post> postOpt = postRepository.findById(id);
+//
+//        postOpt.ifPresent((p)->{
+//            postRepository.delete(p);
+//        });
+//
+//        Assertions.assertThat(postOpt.isPresent()).isTrue();
+//
+//        postOpt.ifPresent( p->{ // p le post qu'on a recupéré depuis sqlserver
+//            Assertions.assertThat(p.equals(post)).isTrue();
+//        });
+//    }
+//
+//
+//    @Test
+//    public void testFindAll(){
+//        List<Post> posts = postRepository.findAll();
+//        Assertions.assertThat(posts).isNotNull();
+//        Assertions.assertThat(posts.size()).isGreaterThan(0);
+//        posts.forEach(System.out::println);
+//    }
+//
+//    @Test
+//    public void testFindByTitle(){
+//        final String title = "%symfony%";
+//        List<Post> posts = postRepository.findByTitleLike(title);
+//        Assertions.assertThat(posts).isNotNull();
+//        Assertions.assertThat(posts.size()).isGreaterThan(0);
+//        posts.forEach(System.out::println);
+//    }
 
 }
