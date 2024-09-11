@@ -1,10 +1,7 @@
 package fr.eni.twitter.bo;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,7 +9,6 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
 @Entity
 @Table(name = "profiles")
 public class Profile {
@@ -24,5 +20,9 @@ public class Profile {
     private String lastname;
     private LocalDate birthday;
     private String bio;
+
+    @ToString.Exclude
+    @OneToOne(mappedBy = "profile")
+    private User user;
 
 }

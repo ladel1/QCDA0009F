@@ -31,7 +31,7 @@ class TwitterApplicationTests {
 
         User userBdd = userRepository.save(user);
         Assertions.assertThat(userBdd).isNotNull();
-        System.out.println(userBdd.getProfile());
+        System.out.println(userBdd);
     }
 
 }
