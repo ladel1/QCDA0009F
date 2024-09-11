@@ -1,4 +1,4 @@
-package fr.eni.caveavin.bo;
+package fr.eni.caveavin.bo.client;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -24,7 +24,7 @@ public class Client {
     @Column(name = "FIRST_NAME",nullable = false,length = 50)
     private String prenom;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "ADDRESS_ID")
     private Adresse adresse;
 
