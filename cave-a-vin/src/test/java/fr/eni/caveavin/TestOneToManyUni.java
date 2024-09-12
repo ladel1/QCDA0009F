@@ -7,15 +7,20 @@ import fr.eni.caveavin.bo.client.LignePanier;
 import fr.eni.caveavin.bo.client.Panier;
 import fr.eni.caveavin.dal.LignePanierRepository;
 import fr.eni.caveavin.dal.PanierRepository;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
 
 @DataJpaTest
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class TestOneToManyUni {
 	@Autowired
 	private TestEntityManager entityManager;
@@ -25,15 +30,35 @@ public class TestOneToManyUni {
 	@Autowired
 	LignePanierRepository lignePanierRepository;
 
+	@BeforeEach
+	public void setUp(){
+		System.out.println("***************    Set Up    *************************");
+		final Panier panier = new Panier();
+		final LignePanier lp = LignePanier
+				.builder()
+				.quantite(3)
+				.prix(3 * 11.45f)
+				.build();
+		panier.getLignesPanier().add(lp);
+		panier.setPrixTotal(lp.getPrix());
+
+		repository.save(panier);
+		System.out.println(repository.findAll());
+	}
+
 	@Test
 	public void testSaveNewLineNewShoppingCart(){
-		Panier panier = panierEnDB();
+		System.out.println("TestOneToManyUni.testSaveNewLineNewShoppingCart");
+		Optional<Panier> panier = repository.findById(1);
 		System.out.println(panier);
 	}
 
 	@Test
 	public void testSaveNewLine(){
-		Panier panierDb = panierEnDB();
+		System.out.println("TestOneToManyUni.testSaveNewLine");
+		Optional<Panier>  panierDbOpt = repository.findById(1);
+		assertThat(panierDbOpt).isPresent();
+		Panier panierDb = panierDbOpt.get();
 		LignePanier newLine = LignePanier.builder()
 				.quantite(10)
 				.prix(2.41f*10)
@@ -51,7 +76,10 @@ public class TestOneToManyUni {
 	}
 	@Test
 	public void testDelete(){
-		Panier panierDb =  panierEnDB();
+		System.out.println("TestOneToManyUni.testDelete");
+		Optional<Panier>  panierDbOpt = repository.findById(1);
+		assertThat(panierDbOpt).isPresent();
+		Panier panierDb = panierDbOpt.get();
 		repository.delete(panierDb);
 		Optional<Panier> panierOpt = repository.findById(1);
 		assertThat(panierOpt).isNotPresent();
@@ -63,29 +91,21 @@ public class TestOneToManyUni {
 	}
 	@Test
 	public void testOrphanRemoval(){
-		Panier panierDb =  panierEnDB();
+		System.out.println("TestOneToManyUni.testOrphanRemoval");
+		Optional<Panier>  panierDbOpt = repository.findById(1);
+		assertThat(panierDbOpt).isPresent();
+		Panier panierDb = panierDbOpt.get();
 		panierDb.getLignesPanier().clear();
 		repository.saveAndFlush(panierDb);
 		Optional<LignePanier> lignePanierOpt = lignePanierRepository.findById(1);
 		assertThat(lignePanierOpt).isNotPresent();
 	}
 
-	private Panier panierEnDB() {
-		final Panier panier = new Panier();
-		final LignePanier lp = LignePanier
-				.builder()
-				.quantite(3)
-				.prix(3 * 11.45f)
-				.build();
-		panier.getLignesPanier().add(lp);
-		panier.setPrixTotal(lp.getPrix());
+//	@AfterEach
+//	@Transactional
+//	public void resetAutoIncrement() {
+//		entityManager.getEntityManager().createNativeQuery("ALTER TABLE CAV_SHOPPING_CART AUTO_INCREMENT = 1").executeUpdate();
+//		entityManager.flush();
+//	}
 
-		entityManager.persist(panier);
-		entityManager.flush();
-
-		assertThat(panier.getId()).isGreaterThan(0);
-		assertThat(panier.getId()).isGreaterThan(0);
-
-		return panier;
-	}
 }
