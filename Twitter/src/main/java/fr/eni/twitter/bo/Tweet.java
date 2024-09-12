@@ -27,6 +27,24 @@ public class Tweet {
     @OneToMany(cascade = CascadeType.ALL,orphanRemoval = true,fetch = FetchType.LAZY, mappedBy = "tweet")
     private List<Comment> comments = new ArrayList<>();
 
+    // Many to Many association
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(
+            name= "tweets_hashtags",
+            joinColumns = {
+                    @JoinColumn(name="tweets_id")
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(name="hashtags_id")
+            }
+    )
+    private List<HashTag> hashTags = new ArrayList<>();
+
+
+
+
+
     public void addComment(Comment comment){
         comments.add(comment);
     }
