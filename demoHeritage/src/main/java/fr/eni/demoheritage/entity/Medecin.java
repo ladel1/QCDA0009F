@@ -2,6 +2,7 @@ package fr.eni.demoheritage.entity;
 
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -15,7 +16,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder // @Builder
 
 @Entity
-@DiscriminatorValue("medecin")
+//@DiscriminatorValue("medecin")
+@Table(name = "medecins")
 public class Medecin extends Personne{
     private String specialite;
     private String numMedecin;

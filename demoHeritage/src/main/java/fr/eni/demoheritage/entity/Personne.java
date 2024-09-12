@@ -16,12 +16,12 @@ import java.time.LocalDate;
 @SuperBuilder
 
 @Entity
-//@Table()
-@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
+@Table(name="personnes")
+@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+//@DiscriminatorColumn(name = "type")
 public abstract class Personne {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.TABLE) // <-------
     private Integer id;
     private String nom;
     private String prenom;
