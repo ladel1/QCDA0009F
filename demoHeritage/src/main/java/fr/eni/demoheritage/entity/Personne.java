@@ -17,11 +17,11 @@ import java.time.LocalDate;
 
 @Entity
 @Table(name="personnes")
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@Inheritance(strategy = InheritanceType.JOINED)
 //@DiscriminatorColumn(name = "type")
 public abstract class Personne {
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE) // <-------
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nom;
     private String prenom;
