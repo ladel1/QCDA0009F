@@ -1,28 +1,21 @@
 package fr.eni.caveavin.bo.client;
 
+import fr.eni.caveavin.bo.Utilisateur;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 // LOmbok
 @Data
-@ToString(of={"pseudo","nom","prenom"})
-@EqualsAndHashCode(of={"pseudo"})
+@ToString(callSuper = true)
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
+@SuperBuilder
 // Spring Data JPA
 @Entity
 @Table(name="CAV_CLIENT")
-public class Client {
-    @Id
-    @Column(name = "LOGIN",nullable = false,length = 50)
-    private String pseudo;
-    @Column(name = "PASSWORD",nullable = false,length = 255)
-    private String password;
-    @Column(name = "LAST_NAME",nullable = false,length = 50)
-    private String nom;
-    @Column(name = "FIRST_NAME",nullable = false,length = 50)
-    private String prenom;
+public class Client extends Utilisateur {
+
 
     @OneToOne(cascade = CascadeType.ALL,orphanRemoval = true)
     @JoinColumn(name = "ADDRESS_ID")
